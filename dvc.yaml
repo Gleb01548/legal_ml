@@ -1,0 +1,41 @@
+stages:
+  convert_data:
+    cmd: python -m src.pipeline.pipeline_convert_zst_to_parquet
+    deps:
+      - ./data/raw/questions.json.zst
+      - ./src/data/convert_zst_to_perquet_9111_df.py
+    outs:
+      - ./data/interim/split_9111_dataset/
+
+  prepare_data:
+    cmd: python -m src.pipeline.pipeline_prepare_dataset_for_vectorization
+    deps:
+      - ./data/interim/split_9111_dataset/
+      - ./src/data/prepare_dataset_for_vectorization.py
+    outs:
+      - ./data/interim/question_answer_dataset/
+
+  load_data_in_vector_db:
+    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db
+    deps:
+      - ./data/interim/question_answer_dataset/
+      - ./src/data/load_data_in_vector_db.py
+      - ./src/containers/embeddings_model.py
+    outs:
+      - ./data/interim/save_time_load_dataset_in_vector_db/
+
+  create_prompt_dataset:
+    cmd: python -m src.pipeline.pipeline_create_prompt_dataset --num_examples_for_train 10000 --rating_more 8 --path_save_dataset ./data/processed/10k_8_qwen
+    deps:
+      - ./data/interim/save_time_load_dataset_in_vector_db/
+      - ./src/features/create_prompt_dataset.py
+    outs:
+      - ./data/processed/10k_8_qwen
+    
+  train_model:
+    cmd: python -m src.pipeline.pipeline_train_model
+    deps:
+      - ./data/processed/10k_8_qwen
+      - ./src/models/train_model.py
+    outs:
+      - ./models/qwen10k_8
