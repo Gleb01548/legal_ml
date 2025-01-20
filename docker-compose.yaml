@@ -5,7 +5,6 @@ services:
     restart: always
     volumes:
       - /home/ssd/volumes/qdrant:/qdrant/storage
-    # command: []
     ports:
       - 6333:6333
       - 6334:6334

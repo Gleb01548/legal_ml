@@ -1,3 +1,6 @@
+import os
+
+import mlflow
 import datasets
 from loguru import logger
 from unsloth import FastLanguageModel, is_bfloat16_supported
@@ -5,6 +8,9 @@ from transformers import TrainingArguments
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 
 model_name = "unsloth/Qwen2.5-7B-Instruct"
+os.environ["MLFLOW_EXPERIMENT_NAME"] = "trainer-mlflow-demo"
+os.environ["MLFLOW_FLATTEN_PARAMS"] = "1"
+os.environ["MLFLOW_TRACKING_URI"] = "http://0.0.0.0:5000"
 
 
 def train_model(
@@ -84,6 +90,8 @@ def train_model(
 
     trainer_stats = trainer.train()
     logger.info(f"Статистика обучения: {trainer_stats}")
+    mlflow.end_run()
+
     model.save_pretrained_merged(
         path_model_save_vllm,
         tokenizer,
@@ -94,5 +102,3 @@ def train_model(
         tokenizer,
         save_method="lora",
     )
-
-    model.save_pretrained_gguf(path_model_save_gguf, tokenizer, quantization_method="q4_k_m")
