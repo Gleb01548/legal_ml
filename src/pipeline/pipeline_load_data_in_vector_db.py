@@ -4,12 +4,11 @@ from datetime import datetime
 
 import click
 from src.data.load_data_in_vector_db import load_dataset_in_vector_db
-from src.containers.embeddings_model import up_embedding_model
 
 
 @click.command()
 @click.option(
-    "--embedding_service_url", type=click.STRING, default="http://127.0.0.1:8080/embed"
+    "--model_emb", type=click.STRING, default="BAAI/bge-m3"
 )
 @click.option("--qdrant_url", type=click.STRING, default="http://localhost:6333")
 @click.option(
@@ -18,14 +17,14 @@ from src.containers.embeddings_model import up_embedding_model
     default="./data/interim/question_answer_dataset",
 )
 @click.option("--collection_name", type=click.STRING, default="questions")
-@click.option("--batch_size", type=click.INT, default=64)
+@click.option("--batch_size", type=click.INT, default=8)
 @click.option(
     "--path_save_time",
     type=click.Path(),
     default="./data/interim/save_time_load_dataset_in_vector_db/",
 )
 def main(
-    embedding_service_url,
+    model_emb,
     qdrant_url,
     path_load_data,
     collection_name,
@@ -33,16 +32,14 @@ def main(
     path_save_time,
 ):
     Path(path_save_time).mkdir(parents=True, exist_ok=True)
-    container = up_embedding_model(embedding_service_url)
 
     load_dataset_in_vector_db(
-        embedding_service_url=embedding_service_url,
+        model_emb=model_emb,
         qdrant_url=qdrant_url,
         path_load_data=path_load_data,
         collection_name=collection_name,
         batch_size=batch_size,
     )
-    container.stop()
 
     file_name = (
         str(datetime.now())

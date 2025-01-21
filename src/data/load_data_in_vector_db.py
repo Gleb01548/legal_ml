@@ -34,13 +34,10 @@ def load_df_in_vector_db(
 
         for _ in range(10):
             try:
-                embeddings_question = embedding_api.get_embeddings(
-                    [i["question"] for i in batch]
-                )
+                embeddings_question = embedding_api.get_embeddings([i["question"] for i in batch])
                 break
             except:
                 time.sleep(3)
-
 
         batch_points = [
             models.PointStruct(
@@ -50,49 +47,59 @@ def load_df_in_vector_db(
                     "answer": record["answer"],
                     "rating": record["rating"],
                 },
-                vector=emb,
+                vector={
+                    "dense": dence,
+                    # "colbert": colbert,
+                    "text-sparse": models.SparseVector(
+                        indices=list(sparce.keys()),
+                        values=list(sparce.values()),
+                    ),
+                },
             )
-            for emb, record in zip(embeddings_question, batch)
+            for dence, sparce, record in zip(
+                embeddings_question["dense_vecs"],
+                embeddings_question["lexical_weights"],
+                # embeddings_question["colbert_vecs"],
+                batch,
+            )
         ]
-
         try:
             client.upsert(
                 collection_name=collection_name,
                 points=batch_points,
-                # timeout=100
             )
         except:
             time.sleep(10)
             logger.error("Ошибка при загрузке данных в Qdrant")
-        
 
 
 def load_dataset_in_vector_db(
-    embedding_service_url: str,
+    model_emb: str,
     qdrant_url: str,
     path_load_data: str,
     collection_name: str,
     batch_size: int,
 ):
     logger.info("Инициализация api эмбеддиг модели и клиента qdrant")
-    embedding_api = EmbeddingAPI(embedding_service_url)
+    embedding_api = EmbeddingAPI(model_emb)
     client = QdrantClient(url=qdrant_url)
-
-    logger.info(f"Удаление коллекции с именем {collection_name}")
-    client.delete_collection(collection_name=collection_name)
+    # client.delete_collection(collection_name)
 
     logger.info(f"Создание коллекции с именем {collection_name}")
+
+    vectors = embedding_api.get_embeddings("test1")
+
     client.create_collection(
         collection_name=collection_name,
-        vectors_config=models.VectorParams(
-            size=len(embedding_api.get_embeddings(["test1"])[0]),
-            distance=models.Distance.COSINE,
-        ),
+        vectors_config={
+            "dense": models.VectorParams(
+                size=vectors["dense_vecs"].shape[0], distance=models.Distance.COSINE
+            ),
+        },
+        sparse_vectors_config={"text-sparse": models.SparseVectorParams()},
     )
 
-    logger.info(
-        f"Начат процесс векторизации данных и их загрузки в коллекцию {collection_name}"
-    )
+    logger.info(f"Начат процесс векторизации данных и их загрузки в коллекцию {collection_name}")
     for name_file in tqdm(os.listdir(path_load_data)):
         df = pd.read_parquet(os.path.join(path_load_data, name_file))
         load_df_in_vector_db(
@@ -102,8 +109,8 @@ def load_dataset_in_vector_db(
             batch_size=batch_size,
             collection_name=collection_name,
         )
-    logger.info(f"Данные в коллекцию успешно загружены")
-    logger.info(f"Проверяем статус коллекции")
+    logger.info("Данные в коллекцию успешно загружены")
+    logger.info("Проверяем статус коллекции")
     """
     Каждые 3 секунды будет проверятся статус коллекции, если код статуса green или red,
     то вернет статус код. Всего попыток 100.

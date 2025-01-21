@@ -16,7 +16,7 @@ stages:
       - ./data/interim/question_answer_dataset/
 
   load_data_in_vector_db:
-    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db
+    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db --collection_name 911_hybrid
     deps:
       - ./data/interim/question_answer_dataset/
       - ./src/data/load_data_in_vector_db.py
@@ -24,18 +24,18 @@ stages:
     outs:
       - ./data/interim/save_time_load_dataset_in_vector_db/
 
-  create_prompt_dataset:
-    cmd: python -m src.pipeline.pipeline_create_prompt_dataset --num_examples_for_train 10000 --rating_more 8 --path_save_dataset ./data/processed/10k_8_qwen
-    deps:
-      - ./data/interim/save_time_load_dataset_in_vector_db/
-      - ./src/features/create_prompt_dataset.py
-    outs:
-      - ./data/processed/10k_8_qwen
+  # create_prompt_dataset:
+  #   cmd: python -m src.pipeline.pipeline_create_prompt_dataset --num_examples_for_train 10000 --rating_more 8 --path_save_dataset ./data/processed/10k_8_qwen
+  #   deps:
+  #     - ./data/interim/save_time_load_dataset_in_vector_db/
+  #     - ./src/features/create_prompt_dataset.py
+  #   outs:
+  #     - ./data/processed/10k_8_qwen
     
-  train_model:
-    cmd: python -m src.pipeline.pipeline_train_model
-    deps:
-      - ./data/processed/10k_8_qwen
-      - ./src/models/train_model.py
-    outs:
-      - ./models/qwen10k_8
+  # train_model:
+  #   cmd: python -m src.pipeline.pipeline_train_model
+  #   deps:
+  #     - ./data/processed/10k_8_qwen
+  #     - ./src/models/train_model.py
+  #   outs:
+  #     - ./models/qwen10k_8

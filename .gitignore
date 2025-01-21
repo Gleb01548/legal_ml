@@ -16,7 +16,8 @@ volumes
 __pycache__/
 *.py[cod]
 *$py.class
-./conf.yaml
+conf.yaml
+notebooks/qdrant_check.ipynb
 
 # C extensions
 *.so
