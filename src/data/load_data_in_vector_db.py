@@ -83,7 +83,7 @@ def load_dataset_in_vector_db(
     logger.info("Инициализация api эмбеддиг модели и клиента qdrant")
     embedding_api = EmbeddingAPI(model_emb)
     client = QdrantClient(url=qdrant_url)
-    # client.delete_collection(collection_name)
+    client.delete_collection(collection_name, timeout=1000)
 
     logger.info(f"Создание коллекции с именем {collection_name}")
 
@@ -97,6 +97,7 @@ def load_dataset_in_vector_db(
             ),
         },
         sparse_vectors_config={"text-sparse": models.SparseVectorParams()},
+        timeout=1000
     )
 
     logger.info(f"Начат процесс векторизации данных и их загрузки в коллекцию {collection_name}")

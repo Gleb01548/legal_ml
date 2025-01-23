@@ -1,0 +1,75 @@
+<mxfile host="65bd71144e">
+    <diagram id="f1D4I0dE2boBgdHFsn2S" name="Page-1">
+        <mxGraphModel dx="1312" dy="648" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="9" value="" style="edgeStyle=none;html=1;" parent="1" source="3" target="6" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="911" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="160" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Судебная практика" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="240" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="НПА" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="320" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="" style="edgeStyle=none;html=1;" parent="1" source="6" target="14" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="edgeStyle=none;html=1;" parent="1" source="6" target="16" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="edgeStyle=none;html=1;" parent="1" source="6" target="16" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="" style="edgeStyle=none;html=1;" parent="1" source="6" target="19" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="6" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="480" y="325" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" value="Vector.911" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="160" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="200 примеров для оценки rerank&lt;br&gt;только ID" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="60" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="Бенчмарк 200 примеров&lt;br&gt;Только ID." style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="380" y="60" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="Данные для валидации (5к-10к), loss&lt;br&gt;только ID" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="60" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="Иерархия тюнига гиперпараметров" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="535" y="120" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="&lt;span style=&quot;&quot;&gt;Подбор гиперпараметров &lt;br&gt;для LoRA&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="600" width="170" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="batch_size" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="320" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="Размер датасета (1-5-10-15) Кол-во обучаемых параметров (4-8-16-32)" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="510" y="250" width="280" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="LR на 10 тыс. примерах" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="190" width="200" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="Стабилизация" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="527.5" y="220" width="245" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Изначальный промпт" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="490" y="290" width="320" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="Выбор модели&amp;nbsp; Few-Shot/Zero-shot" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="320" width="440" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

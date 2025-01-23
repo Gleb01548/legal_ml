@@ -17,7 +17,7 @@ from src.data.load_data_in_vector_db import load_dataset_in_vector_db
     default="./data/interim/question_answer_dataset",
 )
 @click.option("--collection_name", type=click.STRING, default="questions")
-@click.option("--batch_size", type=click.INT, default=8)
+@click.option("--batch_size", type=click.INT, default=64)
 @click.option(
     "--path_save_time",
     type=click.Path(),
