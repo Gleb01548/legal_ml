@@ -24,6 +24,14 @@ stages:
     outs:
       - ./data/interim/save_time_load_dataset_in_vector_db/
 
+  sample_records_from_collection:
+    cmd: python -m src.pipeline.pipeline_sample_records_from_collection --collection_name 911_hybrid_rating_points --path_save ./data/interim/data_param_tunning/points.csv
+    deps:
+      - ./data/interim/save_time_load_dataset_in_vector_db/
+      - ./src/data/sample_records_from_collection.py
+    outs:
+      - ./data/interim/data_param_tunning/points.csv
+
   # create_prompt_dataset:
   #   cmd: python -m src.pipeline.pipeline_create_prompt_dataset --num_examples_for_train 10000 --rating_more 8 --path_save_dataset ./data/processed/10k_8_qwen
   #   deps:

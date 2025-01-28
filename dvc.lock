@@ -77,3 +77,21 @@ stages:
       md5: efdb7f028ce3eae52293bd35a210b2c4.dir
       size: 101079322
       nfiles: 7
+  sample_records_from_collection:
+    cmd: python -m src.pipeline.pipeline_sample_records_from_collection --collection_name
+      911_hybrid_rating_points --path_save ./data/interim/data_param_tunning/points.csv
+    deps:
+    - path: ./data/interim/save_time_load_dataset_in_vector_db/
+      hash: md5
+      md5: 44f8092786ae3eee020664192b93e4b7.dir
+      size: 0
+      nfiles: 1
+    - path: ./src/data/sample_records_from_collection.py
+      hash: md5
+      md5: 9bfc62d09e7f835044f5e4cac139a57e
+      size: 743
+    outs:
+    - path: ./data/interim/data_param_tunning/points.csv
+      hash: md5
+      md5: c1becab8263fb60d55593052bee423e6
+      size: 195303
