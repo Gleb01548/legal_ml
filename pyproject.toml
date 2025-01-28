@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "", email = ""},
 ]
-dependencies = ["pandas>=2.2.3", "notebook>=7.3.2", "ipykernel>=6.29.5", "torch>=2.5.1", "datasets>=3.2.0", "unsloth>=2024.12.8", "galore-torch>=1.0", "langchain>=0.3.13", "seaborn>=0.13.2", "zstandard>=0.23.0", "polars>=1.17.1", "qdrant-client>=1.12.1", "openai>=1.58.1", "langchain-community>=0.3.13", "vllm>=0.6.5", "docker>=7.1.0", "pyyml>=0.0.2", "dvc>=3.58.0", "loguru>=0.7.3", "llama-cpp-python>=0.3.6", "ipywidgets>=8.1.5", "bokeh>=3.6.2", "scikit-learn>=1.6.1", "umap-learn>=0.5.7", "langchain-openai>=0.3.0", "fastembed>=0.5.1", "FlagEmbedding>=1.2.11", "mlflow>=2.19.0", "openpyxl>=3.1.5", "yandexcloud>=0.227.0"]
+dependencies = ["pandas>=2.2.3", "notebook>=7.3.2", "ipykernel>=6.29.5", "torch>=2.5.1", "datasets>=3.2.0", "unsloth>=2024.12.8", "galore-torch>=1.0", "langchain>=0.3.13", "seaborn>=0.13.2", "zstandard>=0.23.0", "polars>=1.17.1", "qdrant-client>=1.12.1", "openai>=1.58.1", "langchain-community>=0.3.13", "vllm>=0.6.5", "docker>=7.1.0", "pyyml>=0.0.2", "dvc>=3.58.0", "loguru>=0.7.3", "llama-cpp-python>=0.3.6", "ipywidgets>=8.1.5", "bokeh>=3.6.2", "scikit-learn>=1.6.1", "umap-learn>=0.5.7", "langchain-openai>=0.3.0", "fastembed>=0.5.1", "FlagEmbedding>=1.2.11", "mlflow>=2.19.0", "openpyxl>=3.1.5", "yandexcloud>=0.227.0", "pandarallel>=1.6.5"]
 requires-python = "==3.10.*"
 readme = "README.md"
 license = {text = "MIT"}

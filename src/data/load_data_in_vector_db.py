@@ -15,11 +15,28 @@ def load_df_in_vector_db(
     client: QdrantClient,
     batch_size: int,
     collection_name: str,
+    min_rating: float,
 ) -> None:
     index0 = 0
+
+    if min_rating:
+        len_df = len(df)
+        df["rating"] = [i["rating"] for i in df["answers_max"].to_list()]
+        df = df[df["rating"] > min_rating]
+        len_df_past = len(df)
+        count_droped = len_df - len_df_past
+
+        logger.info(
+            (f"Было записей: {len_df:,}. "
+             f"Записей после фильтра с минимальным рейтингом {min_rating}: {len_df_past:,}. "
+             f"Всего удалено записей: {count_droped:,}")
+        )
+
     len_df = len(df)
+
     for index1 in tqdm(range(batch_size, len_df + batch_size, batch_size)):
         batch = df.iloc[index0:index1].to_dict(orient="records")
+
         index0 = index1
 
         batch = [
@@ -79,6 +96,7 @@ def load_dataset_in_vector_db(
     path_load_data: str,
     collection_name: str,
     batch_size: int,
+    min_rating: float,
 ):
     logger.info("Инициализация api эмбеддиг модели и клиента qdrant")
     embedding_api = EmbeddingAPI(model_emb)
@@ -97,7 +115,7 @@ def load_dataset_in_vector_db(
             ),
         },
         sparse_vectors_config={"text-sparse": models.SparseVectorParams()},
-        timeout=1000
+        timeout=1000,
     )
 
     logger.info(f"Начат процесс векторизации данных и их загрузки в коллекцию {collection_name}")
@@ -109,6 +127,7 @@ def load_dataset_in_vector_db(
             client=client,
             batch_size=batch_size,
             collection_name=collection_name,
+            min_rating=min_rating,
         )
     logger.info("Данные в коллекцию успешно загружены")
     logger.info("Проверяем статус коллекции")

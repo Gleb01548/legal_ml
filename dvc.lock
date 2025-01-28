@@ -36,7 +36,8 @@ stages:
       size: 5423401070
       nfiles: 12
   load_data_in_vector_db:
-    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db
+    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db --collection_name
+      911_hybrid_rating_points --min_rating 0.1
     deps:
     - path: ./data/interim/question_answer_dataset/
       hash: md5
@@ -49,12 +50,12 @@ stages:
       size: 1306
     - path: ./src/data/load_data_in_vector_db.py
       hash: md5
-      md5: 89ce22e468fc2f220097f28a5ee6c2b7
-      size: 4468
+      md5: 6bc96d9a62941d78c48b43a95a400d6a
+      size: 5498
     outs:
     - path: ./data/interim/save_time_load_dataset_in_vector_db/
       hash: md5
-      md5: 25e808360cb112e76ee257e0741e8f8b.dir
+      md5: 44f8092786ae3eee020664192b93e4b7.dir
       size: 0
       nfiles: 1
   create_prompt_dataset:

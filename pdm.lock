@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:d2f147e431e29bfa14a042fa64d7e1f7399dbbaa88e5481b91d091d2c38f15f8"
+content_hash = "sha256:1a709ff75736a3f9bcc9c44ad784302c24095fb8f80eaea67decf0245815da41"
 
 [[metadata.targets]]
 requires_python = "==3.10.*"
@@ -3801,6 +3801,21 @@ groups = ["default"]
 files = [
     {file = "packaging-24.2-py3-none-any.whl", hash = "sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759"},
     {file = "packaging-24.2.tar.gz", hash = "sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f"},
+]
+
+[[package]]
+name = "pandarallel"
+version = "1.6.5"
+requires_python = ">=3.7"
+summary = "An easy to use library to speed up computation (by parallelizing on multi CPUs) with pandas."
+groups = ["default"]
+dependencies = [
+    "dill>=0.3.1",
+    "pandas>=1",
+    "psutil",
+]
+files = [
+    {file = "pandarallel-1.6.5.tar.gz", hash = "sha256:1c2df98ff6441e8ae13ff428ceebaa7ec42d731f7f972c41ce4fdef1d3adf640"},
 ]
 
 [[package]]

@@ -19,6 +19,7 @@ __pycache__/
 *$py.class
 conf.yaml
 notebooks/qdrant_check.ipynb
+notebooks/notebook.ipynb
 
 # C extensions
 *.so

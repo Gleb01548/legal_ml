@@ -52,22 +52,22 @@
                     <mxGeometry x="120" y="600" width="170" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="batch_size" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="280" y="320" width="120" height="60" as="geometry"/>
+                    <mxGeometry x="440" y="290" width="440" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="32" value="Размер датасета (1-5-10-15) Кол-во обучаемых параметров (4-8-16-32)" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="510" y="250" width="280" height="40" as="geometry"/>
+                    <mxGeometry x="440" y="265" width="440" height="25" as="geometry"/>
                 </mxCell>
                 <mxCell id="33" value="LR на 10 тыс. примерах" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="550" y="190" width="200" height="30" as="geometry"/>
+                    <mxGeometry x="440" y="230" width="440" height="15" as="geometry"/>
                 </mxCell>
                 <mxCell id="34" value="Стабилизация" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="527.5" y="220" width="245" height="30" as="geometry"/>
+                    <mxGeometry x="440" y="245" width="440" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="35" value="Изначальный промпт" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="490" y="290" width="320" height="30" as="geometry"/>
+                    <mxGeometry x="440" y="310" width="440" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="38" value="Выбор модели&amp;nbsp; Few-Shot/Zero-shot" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="440" y="320" width="440" height="30" as="geometry"/>
+                    <mxGeometry x="440" y="330" width="440" height="20" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

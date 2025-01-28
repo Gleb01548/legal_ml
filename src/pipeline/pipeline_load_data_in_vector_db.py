@@ -23,6 +23,7 @@ from src.data.load_data_in_vector_db import load_dataset_in_vector_db
     type=click.Path(),
     default="./data/interim/save_time_load_dataset_in_vector_db/",
 )
+@click.option("--min_rating", type=click.FLOAT, default=None)
 def main(
     model_emb,
     qdrant_url,
@@ -30,6 +31,7 @@ def main(
     collection_name,
     batch_size,
     path_save_time,
+    min_rating
 ):
     Path(path_save_time).mkdir(parents=True, exist_ok=True)
 
@@ -39,6 +41,7 @@ def main(
         path_load_data=path_load_data,
         collection_name=collection_name,
         batch_size=batch_size,
+        min_rating=min_rating
     )
 
     file_name = (

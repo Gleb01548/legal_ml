@@ -16,7 +16,7 @@ stages:
       - ./data/interim/question_answer_dataset/
 
   load_data_in_vector_db:
-    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db --collection_name 911_hybrid
+    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db --collection_name 911_hybrid_rating_points --min_rating 0.1
     deps:
       - ./data/interim/question_answer_dataset/
       - ./src/data/load_data_in_vector_db.py
