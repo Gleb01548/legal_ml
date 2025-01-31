@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="f1D4I0dE2boBgdHFsn2S" name="Page-1">
-        <mxGraphModel dx="1312" dy="526" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1246" dy="526" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -48,26 +48,23 @@
                 <mxCell id="23" value="Иерархия тюнига гиперпараметров" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="550" y="120" width="220" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="28" value="&lt;span style=&quot;&quot;&gt;Подбор гиперпараметров &lt;br&gt;для LoRA&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
-                    <mxGeometry x="120" y="600" width="170" height="40" as="geometry"/>
-                </mxCell>
                 <mxCell id="29" value="batch_size" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="440" y="290" width="440" height="20" as="geometry"/>
+                    <mxGeometry x="640" y="345" width="440" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="32" value="Размер датасета (1-5-10-15) Кол-во обучаемых параметров (4-8-16-32)" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="440" y="265" width="440" height="25" as="geometry"/>
+                    <mxGeometry x="640" y="300" width="440" height="25" as="geometry"/>
                 </mxCell>
                 <mxCell id="33" value="LR на 10 тыс. примерах" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="440" y="230" width="440" height="15" as="geometry"/>
+                    <mxGeometry x="640" y="280" width="440" height="15" as="geometry"/>
                 </mxCell>
                 <mxCell id="34" value="Стабилизация" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="440" y="245" width="440" height="20" as="geometry"/>
+                    <mxGeometry x="640" y="365" width="440" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="35" value="Изначальный промпт" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="440" y="310" width="440" height="20" as="geometry"/>
+                    <mxGeometry x="640" y="325" width="440" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="38" value="Выбор модели&amp;nbsp; Few-Shot/Zero-shot" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="440" y="330" width="440" height="20" as="geometry"/>
+                <mxCell id="43" value="Выбор модели | Few-Shot/Zero-shot | reranker" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="325" width="280" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
