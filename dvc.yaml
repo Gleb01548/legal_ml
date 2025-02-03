@@ -32,6 +32,15 @@ stages:
     outs:
       - ./data/interim/data_param_tunning/points.csv
 
+  create_data_records:
+    cmd: python -m src.pipeline.pipeline_create_data_records --collection_name 911_hybrid_rating_points
+    deps:
+      - ./data/interim/data_param_tunning/points.csv
+      - ./src/features/create_data_records.py
+      - ./src/features/retrievers.py
+    outs:
+      - ./data/interim/data_param_tunning/data_records.parquet
+
   # create_prompt_dataset:
   #   cmd: python -m src.pipeline.pipeline_create_prompt_dataset --num_examples_for_train 10000 --rating_more 8 --path_save_dataset ./data/processed/10k_8_qwen
   #   deps:
