@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import click
@@ -41,7 +42,7 @@ from src.features.create_data_records import CreateDataRecords
     default=3,
 )
 def main(path_points, collection_name, rerank_model, qdrant_url, path_save, params, limit):
-    Path(path_save).mkdir(parents=True, exist_ok=True)
+    Path(os.path.dirname(path_save)).mkdir(parents=True, exist_ok=True)
 
     params = eval(params)
     cdr = CreateDataRecords(
@@ -53,7 +54,7 @@ def main(path_points, collection_name, rerank_model, qdrant_url, path_save, para
     logger.info(f"Кол-во строк {len(ids_points)}")
 
     for param in tqdm(params):
-        logger.info(f"Подготовка датасета с параметрами: {param}")
+        logger.info(f"Подготовка записей с параметрами: {param}")
         records = cdr.create_data_records(
             collection_name=collection_name,
             ids=ids_points,
