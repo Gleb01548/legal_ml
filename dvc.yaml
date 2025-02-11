@@ -36,6 +36,7 @@ stages:
     cmd: python -m src.pipeline.pipeline_create_data_records --collection_name 911_hybrid_rating_points
     deps:
       - ./data/interim/data_param_tunning/points.csv
+      - ./src/pipeline/pipeline_create_data_records.py
       - ./src/features/create_data_records.py
       - ./src/features/retrievers.py
     outs:

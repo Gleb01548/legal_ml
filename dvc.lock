@@ -95,3 +95,27 @@ stages:
       hash: md5
       md5: c1becab8263fb60d55593052bee423e6
       size: 195303
+  create_data_records:
+    cmd: python -m src.pipeline.pipeline_create_data_records --collection_name 911_hybrid_rating_points
+    deps:
+    - path: ./data/interim/data_param_tunning/points.csv
+      hash: md5
+      md5: c1becab8263fb60d55593052bee423e6
+      size: 195303
+    - path: ./src/features/create_data_records.py
+      hash: md5
+      md5: 79f9067e3c6ff75d5cbaad0a5e36649e
+      size: 3090
+    - path: ./src/features/retrievers.py
+      hash: md5
+      md5: 917e3984173017b7c6708bb69606a3f2
+      size: 2612
+    - path: ./src/pipeline/pipeline_create_data_records.py
+      hash: md5
+      md5: 71665d9f0daa63b7872123a154935e5c
+      size: 2307
+    outs:
+    - path: ./data/interim/data_param_tunning/data_records.parquet
+      hash: md5
+      md5: 00c02e0e5742fb360b20ae6eab56a3e4
+      size: 1985147

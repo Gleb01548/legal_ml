@@ -66,10 +66,10 @@ def main(path_points, collection_name, rerank_model, qdrant_url, path_save, para
             suffix = "_rerank"
         else:
             suffix = ""
-        df[f"{param['retriver_type']}{suffix}"] = records
+        df[f"param_{param['retriver_type']}{suffix}"] = records
 
     logger.info("Сохранение данных")
-    df.to_parquet(path_save)
+    df.to_parquet(path_save, index=False)
 
 
 if __name__ == "__main__":
