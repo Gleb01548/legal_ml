@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   convert_data:
-    cmd: python -m src.pipeline.pipeline_convert_zst_to_parquet
+    cmd: python -m src.pipeline.01_pipeline_convert_zst_to_parquet
     deps:
     - path: ./data/raw/questions.json.zst
       hash: md5
@@ -14,17 +14,17 @@ stages:
     outs:
     - path: ./data/interim/split_9111_dataset/
       hash: md5
-      md5: 192a0f0951c0795036f10ff40f66c720.dir
-      size: 6339021234
-      nfiles: 12
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
   prepare_data:
-    cmd: python -m src.pipeline.pipeline_prepare_dataset_for_vectorization
+    cmd: python -m src.pipeline.02_pipeline_prepare_dataset_for_vectorization
     deps:
     - path: ./data/interim/split_9111_dataset/
       hash: md5
-      md5: 192a0f0951c0795036f10ff40f66c720.dir
-      size: 6339021234
-      nfiles: 12
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
     - path: ./src/data/prepare_dataset_for_vectorization.py
       hash: md5
       md5: 93429e4d5a0487c1c67de6e8940dcf65
@@ -32,30 +32,30 @@ stages:
     outs:
     - path: ./data/interim/question_answer_dataset/
       hash: md5
-      md5: 32646fada735ec6d54490669cd361d3c.dir
-      size: 5423401070
-      nfiles: 12
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
   load_data_in_vector_db:
-    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db --collection_name
+    cmd: python -m src.pipeline.03_pipeline_load_data_in_vector_db --collection_name
       911_hybrid_rating_points --min_rating 0.1
     deps:
     - path: ./data/interim/question_answer_dataset/
       hash: md5
-      md5: 32646fada735ec6d54490669cd361d3c.dir
-      size: 5423401070
-      nfiles: 12
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
     - path: ./src/containers/embeddings_model.py
       hash: md5
       md5: 8c80c29fb6780f28862fbd4f057821b6
       size: 1306
     - path: ./src/data/load_data_in_vector_db.py
       hash: md5
-      md5: 6bc96d9a62941d78c48b43a95a400d6a
-      size: 5498
+      md5: 4b690ccfd6028b278c54b15ad2936621
+      size: 5620
     outs:
     - path: ./data/interim/save_time_load_dataset_in_vector_db/
       hash: md5
-      md5: 44f8092786ae3eee020664192b93e4b7.dir
+      md5: c3190e5d5278d2d82e196b4d5579fdc0.dir
       size: 0
       nfiles: 1
   create_prompt_dataset:
@@ -78,12 +78,12 @@ stages:
       size: 101079322
       nfiles: 7
   sample_records_from_collection:
-    cmd: python -m src.pipeline.pipeline_sample_records_from_collection --collection_name
+    cmd: python -m src.pipeline.04_pipeline_sample_records_from_collection --collection_name
       911_hybrid_rating_points --path_save ./data/interim/data_param_tunning/points.csv
     deps:
     - path: ./data/interim/save_time_load_dataset_in_vector_db/
       hash: md5
-      md5: 44f8092786ae3eee020664192b93e4b7.dir
+      md5: c3190e5d5278d2d82e196b4d5579fdc0.dir
       size: 0
       nfiles: 1
     - path: ./src/data/sample_records_from_collection.py
@@ -93,8 +93,8 @@ stages:
     outs:
     - path: ./data/interim/data_param_tunning/points.csv
       hash: md5
-      md5: c1becab8263fb60d55593052bee423e6
-      size: 195303
+      md5: 3499f63a180a2636415681cb9d170e06
+      size: 11
   create_data_records:
     cmd: python -m src.pipeline.pipeline_create_data_records --collection_name 911_hybrid_rating_points
     deps:
@@ -104,18 +104,34 @@ stages:
       size: 195303
     - path: ./src/features/create_data_records.py
       hash: md5
-      md5: 79f9067e3c6ff75d5cbaad0a5e36649e
-      size: 3090
+      md5: e215c74fe6ecd86e13ec0790702aed99
+      size: 3753
     - path: ./src/features/retrievers.py
       hash: md5
       md5: 917e3984173017b7c6708bb69606a3f2
       size: 2612
     - path: ./src/pipeline/pipeline_create_data_records.py
       hash: md5
-      md5: 71665d9f0daa63b7872123a154935e5c
-      size: 2307
+      md5: 4d3698a8f3597a832e67ee6990e895e8
+      size: 2700
     outs:
     - path: ./data/interim/data_param_tunning/data_records.parquet
       hash: md5
-      md5: 00c02e0e5742fb360b20ae6eab56a3e4
-      size: 1985147
+      md5: 6294ad396c13a308c9193197dd80b270
+      size: 195652702
+  create_data_prompts:
+    cmd: python -m src.pipeline.pipeline_create_prompt
+    deps:
+    - path: ./data/interim/data_param_tunning/data_records.parquet
+      hash: md5
+      md5: 6294ad396c13a308c9193197dd80b270
+      size: 195652702
+    - path: ./src/pipeline/pipeline_create_prompt.py
+      hash: md5
+      md5: 2c83b366b55c618941811a59dcfdeea9
+      size: 2415
+    outs:
+    - path: ./data/interim/data_param_tunning/data_prompts.parquet
+      hash: md5
+      md5: 158b08ed391f80b52c9481b2b6667345
+      size: 100806573

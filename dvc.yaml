@@ -1,14 +1,15 @@
 stages:
   convert_data:
-    cmd: python -m src.pipeline.pipeline_convert_zst_to_parquet
+    cmd: python -m src.pipeline.01_pipeline_convert_zst_to_parquet
     deps:
+      - ./src/pipeline/01_pipeline_convert_zst_to_parquet.py
       - ./data/raw/questions.json.zst
       - ./src/data/convert_zst_to_perquet_9111_df.py
     outs:
       - ./data/interim/split_9111_dataset/
 
   prepare_data:
-    cmd: python -m src.pipeline.pipeline_prepare_dataset_for_vectorization
+    cmd: python -m src.pipeline.02_pipeline_prepare_dataset_for_vectorization
     deps:
       - ./data/interim/split_9111_dataset/
       - ./src/data/prepare_dataset_for_vectorization.py
@@ -16,7 +17,7 @@ stages:
       - ./data/interim/question_answer_dataset/
 
   load_data_in_vector_db:
-    cmd: python -m src.pipeline.pipeline_load_data_in_vector_db --collection_name 911_hybrid_rating_points --min_rating 0.1
+    cmd: python -m src.pipeline.03_pipeline_load_data_in_vector_db --collection_name 911_hybrid_rating_points --min_rating 0.1
     deps:
       - ./data/interim/question_answer_dataset/
       - ./src/data/load_data_in_vector_db.py
@@ -25,7 +26,7 @@ stages:
       - ./data/interim/save_time_load_dataset_in_vector_db/
 
   sample_records_from_collection:
-    cmd: python -m src.pipeline.pipeline_sample_records_from_collection --collection_name 911_hybrid_rating_points --path_save ./data/interim/data_param_tunning/points.csv
+    cmd: python -m src.pipeline.04_pipeline_sample_records_from_collection --collection_name 911_hybrid_rating_points --path_save ./data/interim/data_param_tunning/points.csv
     deps:
       - ./data/interim/save_time_load_dataset_in_vector_db/
       - ./src/data/sample_records_from_collection.py
@@ -33,7 +34,7 @@ stages:
       - ./data/interim/data_param_tunning/points.csv
 
   create_data_records:
-    cmd: python -m src.pipeline.pipeline_create_data_records --collection_name 911_hybrid_rating_points
+    cmd: python -m src.pipeline.05_pipeline_create_data_records --collection_name 911_hybrid_rating_points
     deps:
       - ./data/interim/data_param_tunning/points.csv
       - ./src/pipeline/pipeline_create_data_records.py
@@ -41,6 +42,31 @@ stages:
       - ./src/features/retrievers.py
     outs:
       - ./data/interim/data_param_tunning/data_records.parquet
+
+  create_data_prompts:
+    cmd: python -m src.pipeline.06_pipeline_create_prompt
+    deps:
+      - ./src/pipeline/pipeline_create_prompt.py
+      - ./data/interim/data_param_tunning/data_records.parquet
+    outs:
+      - ./data/interim/data_param_tunning/data_prompts.parquet
+
+  find_best_retriver:
+    cmd: python -m src.pipeline.07_pipeline_best_retriver_train_model
+    deps:
+      - ./data/interim/data_param_tunning/data_prompts.parquet
+    outs:
+      - ./models/qwen/exp_retriver
+
+  # find_best_retriver:
+  #   cmd: python -m src.pipeline.pipeline_best_retriver_count_train_model --collection_name 911_hybrid_rating_points
+  #   deps:
+  #     - ./data/interim/data_param_tunning/points.csv
+  #     - ./src/pipeline/pipeline_create_data_records.py
+  #     - ./src/features/create_data_records.py
+  #     - ./src/features/retrievers.py
+  #   outs:
+  #     - ./data/interim/data_param_tunning/data_records.parquet
 
   # create_prompt_dataset:
   #   cmd: python -m src.pipeline.pipeline_create_prompt_dataset --num_examples_for_train 10000 --rating_more 8 --path_save_dataset ./data/processed/10k_8_qwen

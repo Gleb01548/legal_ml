@@ -52,7 +52,7 @@ def main(path_points, collection_name, rerank_model, qdrant_url, path_save, para
     df = pd.read_csv(path_points)
     ids_points = df["points"].to_list()
     logger.info(f"Кол-во строк {len(ids_points)}")
-
+    columns_none_check = []
     for param in tqdm(params):
         logger.info(f"Подготовка записей с параметрами: {param}")
         records = cdr.create_data_records(
@@ -66,9 +66,15 @@ def main(path_points, collection_name, rerank_model, qdrant_url, path_save, para
             suffix = "_rerank"
         else:
             suffix = ""
-        df[f"param_{param['retriver_type']}{suffix}"] = records
+        columns_none_check.append(f"param_{param['retriver_type']}{suffix}")
+        df[columns_none_check[-1]] = records
 
-    logger.info("Сохранение данных")
+    logger.info("Удаляем записи по которым не удалось получить информацию")
+    len_befor = len(df)
+    df = df[(~df[columns_none_check].T.isna()).all()]
+
+    logger.info(f"Сохранение данных. Было записей {len_befor}. Стало {len(df)}")
+    df.to_pickle("data/interim/owl.pickle")
     df.to_parquet(path_save, index=False)
 
 

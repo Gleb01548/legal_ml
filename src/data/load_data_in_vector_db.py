@@ -27,9 +27,11 @@ def load_df_in_vector_db(
         count_droped = len_df - len_df_past
 
         logger.info(
-            (f"Было записей: {len_df:,}. "
-             f"Записей после фильтра с минимальным рейтингом {min_rating}: {len_df_past:,}. "
-             f"Всего удалено записей: {count_droped:,}")
+            (
+                f"Было записей: {len_df:,}. "
+                f"Записей после фильтра с минимальным рейтингом {min_rating}: {len_df_past:,}. "
+                f"Всего удалено записей: {count_droped:,}"
+            )
         )
 
     len_df = len(df)
@@ -47,6 +49,7 @@ def load_df_in_vector_db(
                 "rating": i["answers_max"]["rating"],
             }
             for i in batch
+            if len(i["description"]) < 3_000 and len(i["answers_max"]["text"]) < 3000
         ]
 
         for _ in range(10):

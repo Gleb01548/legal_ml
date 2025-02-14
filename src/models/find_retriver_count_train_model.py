@@ -1,10 +1,21 @@
+import os
+
+import mlflow
 from loguru import logger
-from unsloth import FastLanguageModel, is_bfloat16_supported
 from transformers import TrainingArguments
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
+from unsloth import FastLanguageModel, is_bfloat16_supported
 
 
-def train_model(model_name, train, valid, path_model_save_lora):
+os.environ["MLFLOW_FLATTEN_PARAMS"] = "1"
+os.environ["MLFLOW_TRACKING_URI"] = "http://0.0.0.0:5000"
+
+
+def train_model(model_name, train, valid, path_model_save_lora, param_log, experiment_name):
+    os.environ["MLFLOW_EXPERIMENT_NAME"] = experiment_name
+
+    mlflow.start_run()
+    mlflow.log_params(param_log)
     max_seq_length = 4096
     r = 8
     use_rslora = True
@@ -45,16 +56,16 @@ def train_model(model_name, train, valid, path_model_save_lora):
         tokenizer=tokenizer,
         train_dataset=train,
         eval_dataset=valid,
-        dataset_text_field="prompt_context",
+        dataset_text_field="text",
         max_seq_length=max_seq_length,
         data_collator=collator,
         dataset_num_proc=16,
         packing=False,  # Can make training 5x faster for short sequences.
         args=TrainingArguments(
-            per_device_train_batch_size=16,
-            gradient_accumulation_steps=2,
+            per_device_train_batch_size=4,
+            gradient_accumulation_steps=4,
             warmup_steps=5,
-            num_train_epochs=5,  # Set this for 1 full training run.
+            num_train_epochs=5,
             eval_strategy="steps",
             eval_steps=100,
             save_strategy="steps",
@@ -81,3 +92,7 @@ def train_model(model_name, train, valid, path_model_save_lora):
         tokenizer,
         save_method="lora",
     )
+
+    mlflow.log_artifact("./src/", artifact_path="code")
+
+    mlflow.end_run()

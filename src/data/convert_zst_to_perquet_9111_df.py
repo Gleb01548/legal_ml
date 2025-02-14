@@ -1,3 +1,4 @@
+import os
 import io
 import zstandard as zstd
 

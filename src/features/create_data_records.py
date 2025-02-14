@@ -8,6 +8,8 @@ from FlagEmbedding import FlagLLMReranker
 from src.features.retrievers import sparse_queary, dense_query, dense_sparse_query
 
 
+logger.add("./logs/create_data_record_{time}.log", enqueue=True)
+
 search_dict = {
     "sparse_queary": sparse_queary,
     "dense_query": dense_query,
@@ -44,7 +46,14 @@ class CreateDataRecords:
 
     def reranker_func(self, question, points):
         texts = [i.payload["question"] for i in points]
-        score = self.reranker.compute_score([[question, i] for i in texts])
+        try:
+            score = self.reranker.compute_score([[question, i] for i in texts])
+        except Exception as e:
+            logger.info(f"Ошибка: {e}. {texts}")
+            logger.info(f"Ошибка: {[[question, i] for i in texts]}")
+
+            raise
+
         index_score = sorted(
             [(index, score) for index, score in enumerate(score)],
             key=lambda x: x[1],
@@ -81,10 +90,17 @@ class CreateDataRecords:
 
         points = [i for i in points if i.payload["question"] != payload["question"]]
 
+        if not points:
+            logger.info(f"Ошибка id {id_record}")
+            return
+
         if use_reranker:
             points = self.reranker_func(payload["question"], points)
 
-        record_result = {"question_answer": payload, "context": [i.payload for i in points]}
+        record_result = {
+            "question_answer": payload,
+            "context": [i.payload for i in points],
+        }
 
         return record_result
 
@@ -96,9 +112,15 @@ class CreateDataRecords:
         use_reranker: bool,
         limit: int,
     ):
+        logger.info(f"retriver_type_{retriver_type} use_reranker_{use_reranker}")
         records = []
         for id in tqdm(ids):
-            records.append(
-                self.create_record(collection_name, id, retriver_type, use_reranker, limit)
-            )
+            try:
+                records.append(
+                    self.create_record(collection_name, id, retriver_type, use_reranker, limit)
+                )
+            except Exception as e:
+                logger.info(f"Ошибка id {id} {e}")
+                records.append(None)
+                continue
         return records
