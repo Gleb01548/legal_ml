@@ -1,4 +1,5 @@
 from typing import List
+from functools import partial
 
 from loguru import logger
 from tqdm import tqdm
@@ -13,7 +14,7 @@ logger.add("./logs/create_data_record_{time}.log", enqueue=True)
 search_dict = {
     "sparse_queary": sparse_queary,
     "dense_query": dense_query,
-    "dense_sparse_query": dense_sparse_query,
+    "dense_sparse_query": partial(dense_sparse_query, limit_dense=50),
 }
 
 

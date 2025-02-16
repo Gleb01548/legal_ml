@@ -2,9 +2,11 @@ import os
 
 import mlflow
 from loguru import logger
-from transformers import TrainingArguments
-from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
+from trl import SFTTrainer, DataCollatorForCompletionOnlyLM, SFTConfig
+from unsloth import unsloth_train
 from unsloth import FastLanguageModel, is_bfloat16_supported
+
+from src.models.callback import GenerationCallback
 
 
 os.environ["MLFLOW_FLATTEN_PARAMS"] = "1"
@@ -50,22 +52,25 @@ def train_model(model_name, train, valid, path_model_save_lora, param_log, exper
     )
 
     collator = DataCollatorForCompletionOnlyLM("<|im_start|>assistant\n", tokenizer=tokenizer)
-
+    generation_callback = GenerationCallback(tokenizer, valid, num_examples=50)
+    
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
         train_dataset=train,
         eval_dataset=valid,
-        dataset_text_field="text",
-        max_seq_length=max_seq_length,
         data_collator=collator,
-        dataset_num_proc=16,
-        packing=False,  # Can make training 5x faster for short sequences.
-        args=TrainingArguments(
-            per_device_train_batch_size=4,
-            gradient_accumulation_steps=4,
+        callbacks=[generation_callback],
+        args=SFTConfig(
+            dataset_text_field="text",
+            dataset_num_proc=16,
+            packing=False,  # Can make training 5x faster for short sequences.
+            max_seq_length=max_seq_length,
+            per_device_train_batch_size=2,
+            gradient_accumulation_steps=8,
+            per_device_eval_batch_size=2,
             warmup_steps=5,
-            num_train_epochs=5,
+            num_train_epochs=3,
             eval_strategy="steps",
             eval_steps=100,
             save_strategy="steps",
@@ -84,7 +89,7 @@ def train_model(model_name, train, valid, path_model_save_lora, param_log, exper
         ),
     )
 
-    trainer_stats = trainer.train()
+    trainer_stats = unsloth_train(trainer)
     logger.info(f"Статистика обучения: {trainer_stats}")
 
     model.save_pretrained_merged(

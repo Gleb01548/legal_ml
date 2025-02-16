@@ -28,6 +28,7 @@ stages:
   sample_records_from_collection:
     cmd: python -m src.pipeline.04_pipeline_sample_records_from_collection --collection_name 911_hybrid_rating_points --path_save ./data/interim/data_param_tunning/points.csv
     deps:
+      - ./src/pipeline/04_pipeline_sample_records_from_collection.py
       - ./data/interim/save_time_load_dataset_in_vector_db/
       - ./src/data/sample_records_from_collection.py
     outs:
@@ -37,7 +38,7 @@ stages:
     cmd: python -m src.pipeline.05_pipeline_create_data_records --collection_name 911_hybrid_rating_points
     deps:
       - ./data/interim/data_param_tunning/points.csv
-      - ./src/pipeline/pipeline_create_data_records.py
+      - ./src/pipeline/05_pipeline_create_data_records.py
       - ./src/features/create_data_records.py
       - ./src/features/retrievers.py
     outs:
@@ -46,7 +47,7 @@ stages:
   create_data_prompts:
     cmd: python -m src.pipeline.06_pipeline_create_prompt
     deps:
-      - ./src/pipeline/pipeline_create_prompt.py
+      - ./src/pipeline/06_pipeline_create_prompt.py
       - ./data/interim/data_param_tunning/data_records.parquet
     outs:
       - ./data/interim/data_param_tunning/data_prompts.parquet
