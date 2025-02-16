@@ -23,6 +23,7 @@ notebooks/notebook.ipynb
 logs/
 mlruns
 llama.cpp
+unsloth_compiled_cache
 
 # C extensions
 *.so
