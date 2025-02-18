@@ -13,7 +13,7 @@ from src.data.sample_records_from_collection import sample_records_from_collecti
 )
 @click.option("--qdrant_url", type=click.STRING, default="http://localhost:6333")
 @click.option("--collection_name", type=click.STRING, default="./data/interim/data_param_tunning/")
-@click.option("--num_points", type=click.INT, default=30_000)
+@click.option("--num_points", type=click.INT, default=10_000)
 def main(path_save, qdrant_url, collection_name, num_points):
     Path(os.path.dirname(path_save)).mkdir(parents=True, exist_ok=True)
     points = sample_records_from_collection(

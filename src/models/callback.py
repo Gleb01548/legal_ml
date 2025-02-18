@@ -1,19 +1,21 @@
 import mlflow
 import torch
 import pandas as pd
+from unsloth import FastLanguageModel
 from transformers import TrainerCallback
 
 
 class GenerationCallback(TrainerCallback):
-    def __init__(self, tokenizer, eval_dataset, num_examples=3, max_length=512):
+    def __init__(self, model, tokenizer, eval_dataset, num_examples=3):
+        self.model = model
         self.tokenizer = tokenizer
         self.eval_dataset = eval_dataset
         self.num_examples = num_examples
-        self.max_length = max_length
 
     def on_evaluate(self, args, state, control, **kwargs):
         # Выбираем примеры для демонстрации
         samples = [self.eval_dataset[i] for i in range(self.num_examples)]
+        FastLanguageModel.for_inference(self.model)
 
         # Извлекаем промпты и целевые ответы
         results = []
@@ -28,7 +30,7 @@ class GenerationCallback(TrainerCallback):
             inputs = self.tokenizer(prompt, return_tensors="pt", truncation=True).to("cuda")
 
             with torch.no_grad():
-                outputs = self.trainer.model.generate(
+                outputs = self.model.generate(
                     **inputs,
                     max_new_tokens=128,
                     pad_token_id=self.tokenizer.pad_token_id,
@@ -52,3 +54,4 @@ class GenerationCallback(TrainerCallback):
         # Создаем и логируем таблицу
         df = pd.DataFrame(results)
         mlflow.log_table(df, artifact_file=f"generations/step_{state.global_step}.json")
+        FastLanguageModel.for_training(self.model)

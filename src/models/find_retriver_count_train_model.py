@@ -52,8 +52,8 @@ def train_model(model_name, train, valid, path_model_save_lora, param_log, exper
     )
 
     collator = DataCollatorForCompletionOnlyLM("<|im_start|>assistant\n", tokenizer=tokenizer)
-    generation_callback = GenerationCallback(tokenizer, valid, num_examples=50)
-    
+    generation_callback = GenerationCallback(model, tokenizer, valid, num_examples=50)
+
     trainer = SFTTrainer(
         model=model,
         tokenizer=tokenizer,
